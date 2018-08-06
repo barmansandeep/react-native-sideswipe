@@ -170,13 +170,9 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     this.props.shouldCapture(s);
 
   handleGestureMove = (e: GestureEvent, { dx }: GestureState) => {
-    console.log("inside handleGestureMove")
     const currentOffset: number =
       this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) + (this.state.currentIndex * 10 + 5) - (this.props.itemWidth * .333) : this.state.currentIndex * this.props.itemWidth + (this.state.currentIndex * 10 + 5);
     const resolvedOffset: number = currentOffset - dx;
-
-    console.log("currentOffset: " + currentOffset)
-    console.log("resolvedOffset: " + resolvedOffset)
 
     this.list.scrollToOffset({
       offset: resolvedOffset,
@@ -185,7 +181,6 @@ export default class SideSwipe extends Component<CarouselProps, State> {
   };
 
   handleGestureRelease = (e: GestureEvent, { dx, vx }: GestureState) => {
-    console.log("inside handleGestureRelease")
     const currentOffset: number =
     this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) - (this.props.itemWidth * .333)  - (this.state.currentIndex * 10 + 5) : this.state.currentIndex * this.props.itemWidth + (this.state.currentIndex * 10 + 5);
     const resolvedOffset: number = currentOffset - dx;
@@ -194,10 +189,6 @@ export default class SideSwipe extends Component<CarouselProps, State> {
         (dx > 0 ? -this.props.threshold : this.props.threshold)) /
         this.props.itemWidth,
     );
-
-    console.log("currentOffset: " + currentOffset)
-    console.log("resolvedOffset: " + resolvedOffset)
-    console.log("resolvedIndex: " + resolvedIndex)
 
     let newIndex: number;
     if (this.props.useVelocityForIndex) {
@@ -218,12 +209,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
           ? Math.max(resolvedIndex, 0)
           : Math.min(resolvedIndex, this.props.data.length - 1);
     }
-
-    console.log("newIndex: " + newIndex)
-    console.log("this.props.data.length: " + this.props.data.length )
-    console.log("this.props.itemWidth: " + this.props.itemWidth)
-    console.log("viewOffset: " + (newIndex === this.props.data.length - 1 ? this.props.itemWidth * .333 - (this.state.currentIndex * 10 + 5) : this.props.contentOffset) - (this.state.currentIndex * 10 + 5))
-
+    
     this.list.scrollToIndex({
       index: newIndex,
       animated: true,
