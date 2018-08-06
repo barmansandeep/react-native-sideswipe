@@ -1,0 +1,70 @@
+{
+  "_from": "react-native-sideswipe@^1.4.2",
+  "_id": "react-native-sideswipe@1.4.2",
+  "_inBundle": false,
+  "_integrity": "sha512-WhxmXVWijMx1smPlWQwSrzklq9284xsZEnArzQLvksA/23Tsic4AbsMOkqHZB1kjiLEBBbdspLyie5mOnf9zUw==",
+  "_location": "/react-native-sideswipe",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "react-native-sideswipe@^1.4.2",
+    "name": "react-native-sideswipe",
+    "escapedName": "react-native-sideswipe",
+    "rawSpec": "^1.4.2",
+    "saveSpec": null,
+    "fetchSpec": "^1.4.2"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-sideswipe/-/react-native-sideswipe-1.4.2.tgz",
+  "_shasum": "9e3e23077884838c5592533bf09ffd7977283b74",
+  "_spec": "react-native-sideswipe@^1.4.2",
+  "_where": "/Users/robert/IBM/livenation-mobileapp",
+  "author": {
+    "name": "Kurtis Kemple",
+    "email": "kurtiskemple@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/kkemple/react-native-sideswipe/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "cross-platform react native carousel with sensible defaults",
+  "devDependencies": {
+    "all-contributors-cli": "^4.10.1",
+    "flow-bin": "^0.64.0",
+    "glow": "^1.1.2",
+    "lint-staged": "^6.1.0",
+    "prettier": "^1.10.2",
+    "react": "^16.2.0",
+    "react-native": "^0.52.2"
+  },
+  "homepage": "https://github.com/kkemple/react-native-sideswipe#readme",
+  "license": "MIT",
+  "lint-staged": {
+    "src/**/*.js": [
+      "yarn lint"
+    ]
+  },
+  "main": "src/index.js",
+  "name": "react-native-sideswipe",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kkemple/react-native-sideswipe.git"
+  },
+  "scripts": {
+    "contrib:add": "all-contributors add",
+    "contrib:build": "all-contributors generate",
+    "flow": "glow",
+    "lint": "prettier --single-quote --trailing-comma=es5 --write \"src/**/*.js\"",
+    "precommit": "lint-staged"
+  },
+  "version": "1.4.2"
+}
