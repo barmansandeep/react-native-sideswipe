@@ -171,7 +171,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
 
   handleGestureMove = (e: GestureEvent, { dx }: GestureState) => {
     const currentOffset: number =
-      this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) + (this.state.currentIndex * 10 + 5) - (this.props.itemWidth * .333) : (this.state.currentIndex * this.props.itemWidth) + (this.props.itemWidth * .0666) + (this.state.currentIndex * 10 + 5);
+      this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) + (this.state.currentIndex * 10 + 5) - (this.props.itemWidth * .333) : (this.state.currentIndex * this.props.itemWidth) - (this.props.itemWidth * .0666) + (this.state.currentIndex * 10 + 5);
     const resolvedOffset: number = currentOffset - dx;
 
     this.list.scrollToOffset({
