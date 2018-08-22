@@ -6,6 +6,7 @@ import {
   Dimensions,
   FlatList,
   PanResponder,
+  Platform,
   StyleSheet,
 } from 'react-native';
 
@@ -41,8 +42,11 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     renderItem: () => null,
     shouldCapture: ({ dx }: GestureState) => Math.abs(dx) > 1,
     shouldRelease: () => false,
+    isParentScrollEnabled: () => { return true; },
+    enableParentScroll: () => {},
+    disableParentScroll: () => {},
     threshold: 0,
-    useVelocityForIndex: true,
+    useVelocityForIndex: false,
     useNativeDriver: true,
   };
 
@@ -163,21 +167,31 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     index,
   });
 
-  handleGestureTerminationRequest = (e: GestureEvent, s: GestureState) =>
-    this.props.shouldRelease(s);
+  handleGestureTerminationRequest = (e: GestureEvent, s: GestureState) => {
+      return this.props.shouldRelease(s);
+  }
 
-  handleGestureCapture = (e: GestureEvent, s: GestureState) =>
-    this.props.shouldCapture(s);
+  handleGestureCapture = (e: GestureEvent, s: GestureState) => {
+      return this.props.shouldCapture(s);
+  }
 
-  handleGestureMove = (e: GestureEvent, { dx }: GestureState) => {
-    const currentOffset: number =
-      this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) + (this.state.currentIndex * 10 + 5) - (this.props.itemWidth * .333) : (this.state.currentIndex * this.props.itemWidth) - (this.props.itemWidth * .0666) + (this.state.currentIndex * 10 + 5);
-    const resolvedOffset: number = currentOffset - dx;
+  handleGestureMove = (e: GestureEvent, { dx, dy }: GestureState) => {
+      if(Platform.OS === 'ios') {
+          if(Math.abs(dy) > Math.abs(dx) && !this.props.isParentScrollEnabled()) {
+              this.props.enableParentScroll();
+          } else if(Math.abs(dx) > Math.abs(dy) && this.props.isParentScrollEnabled()) {
+              this.props.disableParentScroll();
+          }
+      }
 
-    this.list.scrollToOffset({
-      offset: resolvedOffset,
-      animated: false,
-    });
+      const currentOffset: number =
+        this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) + (this.state.currentIndex * 10 + 5) - (this.props.itemWidth * .333) : (this.state.currentIndex * this.props.itemWidth) - (this.props.itemWidth * .0666) + (this.state.currentIndex * 10 + 5);
+      const resolvedOffset: number = currentOffset - dx;
+
+      this.list.scrollToOffset({
+        offset: resolvedOffset,
+        animated: false,
+      });
   };
 
   handleGestureRelease = (e: GestureEvent, { dx, vx }: GestureState) => {
@@ -208,6 +222,10 @@ export default class SideSwipe extends Component<CarouselProps, State> {
         dx > 0
           ? Math.max(resolvedIndex, 0)
           : Math.min(resolvedIndex, this.props.data.length - 1);
+    }
+
+    if(!this.props.isParentScrollEnabled()) {
+        this.props.enableParentScroll();
     }
 
     this.list.scrollToIndex({
