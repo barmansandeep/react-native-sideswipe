@@ -45,7 +45,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     isParentScrollEnabled: () => { return true; },
     enableParentScroll: () => {},
     disableParentScroll: () => {},
-    threshold: 0,
+    threshold: Dimensions.get('window').width * .2,
     useVelocityForIndex: false,
     useNativeDriver: true,
   };
@@ -83,7 +83,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     const { contentOffset, index, itemWidth } = this.props;
 
     if (prevProps.itemWidth !== itemWidth) {
-      this.state.itemWidthAnim.setValue(itemWidth);
+        this.state.itemWidthAnim.setValue(itemWidth);
     }
 
     if (Number.isInteger(index) && index !== prevProps.index) {
@@ -198,6 +198,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     const currentOffset: number =
     this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) - (this.props.itemWidth * .333)  - (this.state.currentIndex * 10 + 5) : (this.state.currentIndex * this.props.itemWidth) + (this.props.itemWidth * .0666) + (this.state.currentIndex * 10 + 5);
     const resolvedOffset: number = currentOffset - dx;
+
     const resolvedIndex: number = Math.round(
       (resolvedOffset +
         (dx > 0 ? -this.props.threshold : this.props.threshold)) /
@@ -222,6 +223,8 @@ export default class SideSwipe extends Component<CarouselProps, State> {
         dx > 0
           ? Math.max(resolvedIndex, 0)
           : Math.min(resolvedIndex, this.props.data.length - 1);
+        console.log("dx: " + dx)
+        console.log("newIndex: " + newIndex)
     }
 
     if(!this.props.isParentScrollEnabled()) {
