@@ -45,7 +45,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     isParentScrollEnabled: () => { return true; },
     enableParentScroll: () => {},
     disableParentScroll: () => {},
-    threshold: Dimensions.get('window').width * .2,
+    threshold: Dimensions.get('window').width * .3,
     useVelocityForIndex: false,
     useNativeDriver: true,
   };
@@ -73,6 +73,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
   componentWillMount = (): void => {
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: this.handleGestureCapture,
+      onPanResponderGrant: this.handleGestureGrant,
       onPanResponderMove: this.handleGestureMove,
       onPanResponderRelease: this.handleGestureRelease,
       onPanResponderTerminationRequest: this.handleGestureTerminationRequest,
@@ -83,7 +84,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
     const { contentOffset, index, itemWidth } = this.props;
 
     if (prevProps.itemWidth !== itemWidth) {
-        this.state.itemWidthAnim.setValue(itemWidth);
+      this.state.itemWidthAnim.setValue(itemWidth);
     }
 
     if (Number.isInteger(index) && index !== prevProps.index) {
@@ -168,20 +169,27 @@ export default class SideSwipe extends Component<CarouselProps, State> {
   });
 
   handleGestureTerminationRequest = (e: GestureEvent, s: GestureState) => {
+      console.log("Inside handleGestureTerminationRequest")
       return this.props.shouldRelease(s);
   }
 
+  handleGestureGrant = (e: GestureEvent, s: GestureState) => {
+      console.log("Inside handleGestureGrant")
+      if(this.props.isParentScrollEnabled()) {
+          this.props.disableParentScroll();
+      }
+      return
+  }
+
   handleGestureCapture = (e: GestureEvent, s: GestureState) => {
+      console.log("Inside handleGestureCapture")
       return this.props.shouldCapture(s);
   }
 
   handleGestureMove = (e: GestureEvent, { dx, dy }: GestureState) => {
-      if(Platform.OS === 'ios') {
-          if(Math.abs(dy) > Math.abs(dx) && !this.props.isParentScrollEnabled()) {
-              this.props.enableParentScroll();
-          } else if(Math.abs(dx) > Math.abs(dy) && this.props.isParentScrollEnabled()) {
-              this.props.disableParentScroll();
-          }
+      console.log("Inside handleGestureMove")
+      if(this.props.isParentScrollEnabled()) {
+          this.props.disableParentScroll();
       }
 
       const currentOffset: number =
@@ -195,6 +203,7 @@ export default class SideSwipe extends Component<CarouselProps, State> {
   };
 
   handleGestureRelease = (e: GestureEvent, { dx, vx }: GestureState) => {
+    console.log("Inside handleGestureRelease")
     const currentOffset: number =
     this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) - (this.props.itemWidth * .333)  - (this.state.currentIndex * 10 + 5) : (this.state.currentIndex * this.props.itemWidth) + (this.props.itemWidth * .0666) + (this.state.currentIndex * 10 + 5);
     const resolvedOffset: number = currentOffset - dx;
