@@ -169,12 +169,10 @@ export default class SideSwipe extends Component<CarouselProps, State> {
   });
 
   handleGestureTerminationRequest = (e: GestureEvent, s: GestureState) => {
-      console.log("Inside handleGestureTerminationRequest")
       return this.props.shouldRelease(s);
   }
 
   handleGestureGrant = (e: GestureEvent, s: GestureState) => {
-      console.log("Inside handleGestureGrant")
       if(this.props.isParentScrollEnabled()) {
           this.props.disableParentScroll();
       }
@@ -182,12 +180,10 @@ export default class SideSwipe extends Component<CarouselProps, State> {
   }
 
   handleGestureCapture = (e: GestureEvent, s: GestureState) => {
-      console.log("Inside handleGestureCapture")
       return this.props.shouldCapture(s);
   }
 
   handleGestureMove = (e: GestureEvent, { dx, dy }: GestureState) => {
-      console.log("Inside handleGestureMove")
       if(this.props.isParentScrollEnabled()) {
           this.props.disableParentScroll();
       }
@@ -203,7 +199,6 @@ export default class SideSwipe extends Component<CarouselProps, State> {
   };
 
   handleGestureRelease = (e: GestureEvent, { dx, vx }: GestureState) => {
-    console.log("Inside handleGestureRelease")
     const currentOffset: number =
     this.state.currentIndex === this.props.data.length - 1 ? (this.state.currentIndex * this.props.itemWidth) - (this.props.itemWidth * .333)  - (this.state.currentIndex * 10 + 5) : (this.state.currentIndex * this.props.itemWidth) + (this.props.itemWidth * .0666) + (this.state.currentIndex * 10 + 5);
     const resolvedOffset: number = currentOffset - dx;
